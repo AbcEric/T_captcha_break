@@ -68,9 +68,9 @@ def train():
 
     # 最后连接4个分类器：每个分类器n_class个字符
     x = [Dense(n_class, activation='softmax', name='c%d' % (i+1))(x) for i in range(4)]
-    # model = Model(input=input_tensor, output=x)
-    model = load_model('cnn.h5')
-    # model = Model(inputs=input_tensor, outputs=x)
+    model = Model(input=input_tensor, output=x)
+    #model = load_model('cnn.h5')
+    #model = Model(inputs=input_tensor, outputs=x)
 
     model.compile(loss='categorical_crossentropy',
                   optimizer='adadelta',
@@ -80,8 +80,8 @@ def train():
     # 训练模型：
     batch_size = 32
     # 总数从51200调整为5120：nb_epoch为总轮数（共有几个epoch，即数据将被“轮”几次，1个epoch为1轮），
-    model.fit_generator(gen(), steps_per_epoch=5120/batch_size, nb_epoch=60,
-    # model.fit_generator(gen(), steps_per_epoch=5120/batch_size, nb_epoch=2, nb_worker=2,    # 多线程
+    model.fit_generator(gen(), steps_per_epoch=51200/batch_size, nb_epoch=2,
+    # model.fit_generator(gen(), steps_per_epoch=51200/batch_size, nb_epoch=2, nb_worker=2,    # 多线程
                         validation_data=gen(), validation_steps=batch_size)
     # 保存模型
     model.save('cnn.h5')
@@ -114,5 +114,5 @@ def evaluate(model, batch_num=20):
 
     # evaluate(model)
 
-#train()
-predict()
+train()
+#predict()
